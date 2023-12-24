@@ -47,9 +47,9 @@ jobs:
      - name: Build & Publish to Registry
        run: |
          ls -la
-         docker build . --file Dockerfile --tag registry.cn-guangzhou.aliyuncs.com/laikesi/apidemo:$(date +%s)
+         docker build . --file Dockerfile --tag registry.cn-guangzhou.aliyuncs.com/laikesi/apidemo:${{ github.sha }}
          docker images
-         docker push registry.cn-guangzhou.aliyuncs.com/laikesi/apidemo:$(date +%s)
+         docker push registry.cn-guangzhou.aliyuncs.com/laikesi/apidemo:${{ github.sha }}
 
 
        
