@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  build:
+  go-build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -27,3 +27,30 @@ jobs:
       with:
         name: apidemo
         path: apidemo
+        
+  image-build:
+     runs-on: ubuntu-latest
+     steps:
+     - uses: actions/checkout@v3
+     - name: Docker Login
+       uses: docker/login-action@v3.0.0
+       with:
+        registry: registry.cn-guangzhou.aliyuncs.com
+        username: ${{ secrets.DOCKERAUSERNAME }}
+        password: ${{ secrets.DOCKERPASSWD }}
+     - name: Get artifacts
+       uses: actions/download-artifact@master
+       with:
+         name: apidemo
+         path: apidemo
+     - name: Build & Publish to Registry
+       uses: actions/checkout@v3
+     - name: Build the Docker image
+       run: |
+         docker build . --file Dockerfile --tag registry.cn-guangzhou.aliyuncs.com/laikesi/apidemo:$(date +%s)
+         docker images
+         docker push registry.cn-guangzhou.aliyuncs.com/laikesi/apidemo:$(date +%s)
+
+
+       
+       
